@@ -27,32 +27,30 @@
     </script>
 
     <style>
-        /* Mobilde Kaydırma ve Siyah Boşluk Sorununu Çözen Ayarlar */
+        /* Streamlit Iframe Uyumluluğu İçin Tam Ekran Ayarları */
         html, body {
             width: 100%;
             height: 100%;
-            height: 100dvh; /* Mobil dinamik ekran yüksekliği */
             margin: 0;
             padding: 0;
             overflow: hidden !important;
-            position: fixed; /* Ekranı kilitler, kaymayı engeller */
-            top: 0;
-            left: 0;
-            overscroll-behavior: none; /* Mobildeki sekmeyi (pull-to-refresh) engeller */
-            background-color: #f70059; /* Altta siyah boşluk görünmesini engeller */
+            overscroll-behavior: none;
+            background-color: #f70059;
         }
 
         /* Daha Canlı ve Temiz Gradyan Arkaplan */
         .bg-campaign {
             background-color: #f70059; 
-            /* Magenta'dan Turuncuya şık ve temiz bir geçiş */
             background-image: linear-gradient(135deg, #f70059 0%, #ff4d15 100%);
-            background-attachment: fixed;
+            /* Arkaplanın her zaman tüm alanı kaplamasını sağlar */
+            position: absolute;
+            inset: 0;
+            z-index: 0;
         }
 
         /* Kitap ve Sayfa Stilleri */
         .flipbook {
-            display: none; /* Yüklenene kadar gizli */
+            display: none; 
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
             border-radius: 4px;
         }
@@ -76,7 +74,7 @@
         .page canvas {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Sayfayı tam sığdır */
+            object-fit: contain;
         }
 
         /* Özel Scrollbar (Sidebar için) */
@@ -107,13 +105,13 @@
         
         /* HedefAVM Filigranı */
         .watermark {
-            position: fixed;
+            position: absolute;
             bottom: -20px;
             right: 20px;
             font-size: clamp(5rem, 10vw, 10rem);
             font-weight: 900;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.15); /* Şeffaflık ayarlandı */
+            color: rgba(255, 255, 255, 0.15);
             z-index: 0;
             pointer-events: none;
             letter-spacing: -3px;
@@ -125,7 +123,10 @@
         }
     </style>
 </head>
-<body class="flex flex-col font-sans text-gray-800 bg-campaign relative w-full h-full">
+<body class="font-sans text-gray-800">
+
+    <!-- Dinamik Arkaplan Katmanı -->
+    <div class="bg-campaign"></div>
 
     <!-- Üst Header -->
     <header class="bg-black bg-opacity-20 text-white p-3 flex justify-between items-center shadow-md z-20 absolute top-0 left-0 right-0 backdrop-blur-sm border-b border-white border-opacity-10">
@@ -154,8 +155,8 @@
     </div>
 
     <!-- Ana İçerik Alanı (Katalog Gövdesi) -->
-    <!-- TITREME VE KAYDIRMA SORUNUNU ÇÖZMEK İÇİN OVERFLOW-HIDDEN YAPILDI -->
-    <main class="flex-1 relative flex items-center justify-center overflow-hidden w-full h-full pt-20 pb-28 px-4 sm:px-10" id="main-container">
+    <!-- Üst menü ve alt menü arası tam sığması için absolute olarak konumlandırıldı -->
+    <main class="absolute top-16 bottom-24 left-0 right-0 flex items-center justify-center overflow-hidden z-10" id="main-container">
         
         <!-- Arkaplan Yazısı -->
         <div class="watermark">HedefAVM</div>
@@ -168,7 +169,7 @@
         </div>
 
         <!-- Kitap Sarıcı (Boyut Sınırlandırması İçin) -->
-        <div id="flipbook-wrapper" class="w-full max-w-5xl h-[70vh] max-h-[850px] origin-center z-10 flex justify-center items-center relative">
+        <div id="flipbook-wrapper" class="w-[95%] sm:w-[90%] max-w-5xl h-full max-h-[850px] origin-center z-10 flex justify-center items-center relative py-2">
             <div id="flipbook" class="flipbook w-full h-full">
                 <!-- Sayfalar JS tarafından buraya eklenecek -->
             </div>
