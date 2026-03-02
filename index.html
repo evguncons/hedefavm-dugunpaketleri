@@ -27,22 +27,18 @@
     </script>
 
     <style>
-        /* Daha Yumuşak ve Göz Yormayan Gradyan Arkaplan */
+        /* Daha Canlı ve Temiz Gradyan Arkaplan */
         .bg-campaign {
-            background-color: #2b0013; /* Hata payı için koyu zemin */
-            /* Koyu mürdümden yumuşak turuncuya zarif bir geçiş ve hafif indirim deseni */
-            background-image: 
-                linear-gradient(135deg, rgba(43, 0, 19, 0.95) 0%, rgba(140, 5, 50, 0.85) 50%, rgba(190, 60, 15, 0.8) 100%),
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='250'%3E%3Cg transform='rotate(-20 250 125)'%3E%3Ctext x='0' y='100' font-family='Arial Black, sans-serif' font-size='65' font-weight='900' fill='rgba(255,255,255,0)' stroke='rgba(255,255,255,0.04)' stroke-width='2'%3E%2550 %C4%B0ND%C4%B0R%C4%B0M%3C/text%3E%3Ctext x='100' y='200' font-family='Arial Black, sans-serif' font-size='65' font-weight='900' fill='rgba(255,255,255,0)' stroke='rgba(255,255,255,0.04)' stroke-width='2'%3E%2550 %C4%B0ND%C4%B0R%C4%B0M%3C/text%3E%3C/g%3E%3C/svg%3E");
-            background-repeat: no-repeat, repeat;
-            background-size: cover, 500px 250px;
+            background-color: #f70059; 
+            /* Magenta'dan Turuncuya şık ve temiz bir geçiş */
+            background-image: linear-gradient(135deg, #f70059 0%, #ff4d15 100%);
             background-attachment: fixed;
         }
 
         /* Kitap ve Sayfa Stilleri */
         .flipbook {
             display: none; /* Yüklenene kadar gizli */
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
             border-radius: 4px;
         }
         
@@ -82,7 +78,7 @@
 
         /* Yükleme Animasyonu */
         .loader {
-            border: 5px solid rgba(255,255,255,0.2);
+            border: 5px solid rgba(255,255,255,0.3);
             border-bottom-color: #ffffff;
             border-radius: 50%;
             width: 60px;
@@ -102,7 +98,7 @@
             font-size: clamp(5rem, 10vw, 10rem);
             font-weight: 900;
             font-style: italic;
-            color: rgba(255, 255, 255, 0.05); /* Şeffaflık kısıldı, daha soft bir görünüm eklendi */
+            color: rgba(255, 255, 255, 0.15); /* Şeffaflık ayarlandı */
             z-index: 0;
             pointer-events: none;
             letter-spacing: -3px;
@@ -110,32 +106,32 @@
 
         /* Zoom Slider Rengi */
         input[type=range] {
-            accent-color: #ff4d15;
+            accent-color: #ffffff;
         }
     </style>
 </head>
 <body class="h-screen flex flex-col overflow-hidden font-sans text-gray-800 bg-campaign relative">
 
     <!-- Üst Header -->
-    <header class="bg-black bg-opacity-40 text-white p-3 flex justify-between items-center shadow-lg z-20 absolute top-0 left-0 right-0 backdrop-blur-sm border-b border-white border-opacity-10">
+    <header class="bg-black bg-opacity-20 text-white p-3 flex justify-between items-center shadow-md z-20 absolute top-0 left-0 right-0 backdrop-blur-sm border-b border-white border-opacity-10">
         <div class="font-semibold text-lg tracking-wide flex items-center gap-4" id="book-title">
-            <span class="flex items-center gap-2 text-sm sm:text-base"><i class="fas fa-heart text-orange-400"></i> Fırsat Kataloğu <i class="fas fa-fire text-orange-400"></i></span>
-            <div class="bg-black bg-opacity-50 px-3 py-1 rounded-full text-xs sm:text-sm whitespace-nowrap border border-white border-opacity-10">
+            <span class="flex items-center gap-2 text-sm sm:text-base"><i class="fas fa-heart text-white opacity-80"></i> Fırsat Kataloğu <i class="fas fa-fire text-white opacity-80"></i></span>
+            <div class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-xs sm:text-sm whitespace-nowrap border border-white border-opacity-10">
                 Sayfa <span id="current-page">0</span> / <span id="total-pages">0</span>
             </div>
         </div>
         <div class="flex gap-4 items-center">
-            <a href="https://instagram.com/hedefavm" target="_blank" class="bg-black bg-opacity-50 hover:bg-opacity-70 transition px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-md border border-white border-opacity-10">
-                <i class="fab fa-instagram text-pink-400 text-base"></i> <span class="hidden sm:inline">İnstagram</span>
+            <a href="https://instagram.com/hedefavm" target="_blank" class="bg-black bg-opacity-30 hover:bg-opacity-50 transition px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm border border-white border-opacity-10">
+                <i class="fab fa-instagram text-white opacity-90 text-base"></i> <span class="hidden sm:inline">İnstagram</span>
             </a>
         </div>
     </header>
 
     <!-- Küçük Resimler (Sidebar) -->
-    <div id="sidebar" class="fixed top-0 left-0 h-full w-72 sm:w-80 bg-gradient-to-b from-[#8c0532] to-[#be3c0f] shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-white border-opacity-10">
-        <div class="p-4 flex justify-between items-center text-white border-b border-white border-opacity-20 bg-black bg-opacity-20 mt-14 sm:mt-16">
+    <div id="sidebar" class="fixed top-0 left-0 h-full w-72 sm:w-80 bg-gradient-to-b from-brand-magenta to-brand-orange shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-white border-opacity-10">
+        <div class="p-4 flex justify-between items-center text-white border-b border-white border-opacity-20 bg-black bg-opacity-10 mt-14 sm:mt-16">
             <h2 class="font-bold text-lg"><i class="fas fa-th-large mr-2"></i> Küçük Resimler</h2>
-            <button id="btn-close-sidebar" class="hover:text-gray-300 transition p-2"><i class="fas fa-times text-xl"></i></button>
+            <button id="btn-close-sidebar" class="hover:text-gray-200 transition p-2"><i class="fas fa-times text-xl"></i></button>
         </div>
         <div id="thumbnails-container" class="p-4 overflow-y-auto flex-1 grid grid-cols-2 gap-4 auto-rows-max">
             <!-- Thumbnails JS ile buraya yüklenecek -->
@@ -150,10 +146,10 @@
         <div class="watermark">HedefAVM</div>
 
         <!-- Yükleniyor Ekranı -->
-        <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-[#2b0013] via-[#8c0532] to-[#be3c0f] flex flex-col items-center justify-center z-30 text-white backdrop-blur-md">
+        <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-brand-magenta to-brand-orange flex flex-col items-center justify-center z-30 text-white backdrop-blur-sm">
             <div class="loader mb-6" id="loader-spinner"></div>
             <p class="font-bold text-xl sm:text-2xl text-center px-4 tracking-wide" id="loading-text">Katalog Hazırlanıyor...</p>
-            <p class="text-sm opacity-70 mt-2 text-center px-4 font-light" id="loading-subtext">Lütfen bekleyin</p>
+            <p class="text-sm opacity-90 mt-2 text-center px-4 font-light" id="loading-subtext">Lütfen bekleyin</p>
         </div>
 
         <!-- Kitap Sarıcı (Boyut Sınırlandırması İçin) -->
@@ -168,40 +164,40 @@
     </main>
 
     <!-- Zoom Kontrol Paneli -->
-    <div id="zoom-control" class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-80 backdrop-blur-md rounded-full px-6 py-3 items-center gap-4 z-40 shadow-xl border border-white border-opacity-20">
+    <div id="zoom-control" class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-60 backdrop-blur-md rounded-full px-6 py-3 items-center gap-4 z-40 shadow-xl border border-white border-opacity-20">
         <i class="fas fa-search-minus text-white text-sm"></i>
         <input type="range" id="zoom-slider" min="0.5" max="3" step="0.1" value="1" class="w-32 sm:w-48 cursor-pointer">
         <i class="fas fa-search-plus text-white text-sm"></i>
-        <div class="w-px h-6 bg-gray-500 mx-2"></div>
+        <div class="w-px h-6 bg-white opacity-30 mx-2"></div>
         <span id="zoom-val-text" class="text-white font-mono text-sm w-10">100%</span>
-        <button id="btn-close-zoom" class="text-gray-300 hover:text-white ml-2 transition"><i class="fas fa-times"></i></button>
+        <button id="btn-close-zoom" class="text-white opacity-70 hover:opacity-100 ml-2 transition"><i class="fas fa-times"></i></button>
     </div>
 
     <!-- Alt Araç Çubuğu -->
-    <footer class="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 backdrop-blur-md rounded-full p-2 sm:p-3 shadow-2xl z-20 flex justify-between items-center px-4 sm:px-8 w-[95%] max-w-3xl border border-white border-opacity-10">
+    <footer class="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-40 backdrop-blur-md rounded-full p-2 sm:p-3 shadow-xl z-20 flex justify-between items-center px-4 sm:px-8 w-[95%] max-w-3xl border border-white border-opacity-10">
         
         <!-- Sol İkonlar -->
         <div class="flex gap-3 sm:gap-6 text-white opacity-90 mr-2 sm:mr-6">
-            <button id="btn-thumbnails" class="hover:text-brand-orange transition transform hover:scale-110" title="Küçük Resimler"><i class="fas fa-th-large text-lg"></i></button>
-            <button class="hover:text-brand-orange transition transform hover:scale-110" title="İçindekiler"><i class="fas fa-list text-lg"></i></button>
+            <button id="btn-thumbnails" class="hover:text-gray-300 transition transform hover:scale-110" title="Küçük Resimler"><i class="fas fa-th-large text-lg"></i></button>
+            <button class="hover:text-gray-300 transition transform hover:scale-110" title="İçindekiler"><i class="fas fa-list text-lg"></i></button>
         </div>
 
         <!-- Sayfa Kontrolleri (Orta) -->
-        <div class="flex gap-4 sm:gap-8 items-center border-l border-r border-gray-400 border-opacity-30 px-4 sm:px-8">
-            <button id="btn-prev" class="text-white hover:text-brand-orange disabled:opacity-20 disabled:cursor-not-allowed transition text-xl sm:text-2xl" disabled>
+        <div class="flex gap-4 sm:gap-8 items-center border-l border-r border-white border-opacity-20 px-4 sm:px-8">
+            <button id="btn-prev" class="text-white hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition text-xl sm:text-2xl" disabled>
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <button id="btn-next" class="text-white hover:text-brand-orange disabled:opacity-20 disabled:cursor-not-allowed transition text-xl sm:text-2xl" disabled>
+            <button id="btn-next" class="text-white hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition text-xl sm:text-2xl" disabled>
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
 
         <!-- Sağ İkonlar -->
         <div class="flex gap-3 sm:gap-6 text-white opacity-90 ml-2 sm:ml-6">
-            <button id="btn-zoom" class="hover:text-brand-orange transition transform hover:scale-110" title="Yakınlaştır"><i class="fas fa-search-plus text-lg"></i></button>
-            <button id="btn-share" class="hover:text-brand-orange transition transform hover:scale-110" title="Paylaş"><i class="fas fa-share-alt text-lg"></i></button>
-            <button id="btn-download" class="hover:text-brand-orange transition transform hover:scale-110" title="İndir"><i class="fas fa-download text-lg"></i></button>
-            <button id="btn-fullscreen" class="hover:text-brand-orange transition transform hover:scale-110 hidden sm:block" title="Tam Ekran"><i class="fas fa-expand text-lg"></i></button>
+            <button id="btn-zoom" class="hover:text-gray-300 transition transform hover:scale-110" title="Yakınlaştır"><i class="fas fa-search-plus text-lg"></i></button>
+            <button id="btn-share" class="hover:text-gray-300 transition transform hover:scale-110" title="Paylaş"><i class="fas fa-share-alt text-lg"></i></button>
+            <button id="btn-download" class="hover:text-gray-300 transition transform hover:scale-110" title="İndir"><i class="fas fa-download text-lg"></i></button>
+            <button id="btn-fullscreen" class="hover:text-gray-300 transition transform hover:scale-110 hidden sm:block" title="Tam Ekran"><i class="fas fa-expand text-lg"></i></button>
         </div>
     </footer>
 
@@ -278,13 +274,13 @@
                 // Sadeleştirilmiş Hata Mesajı
                 loaderSpinner.style.display = 'none';
                 document.getElementById('loading-text').innerHTML = `
-                    <i class="fas fa-exclamation-triangle text-brand-orange text-4xl mb-4 block"></i>
+                    <i class="fas fa-exclamation-triangle text-white text-4xl mb-4 block opacity-80"></i>
                     Katalog Bulunamadı!
                 `;
                 loadingSubtext.innerHTML = `
-                    <div class="bg-black bg-opacity-30 p-4 sm:p-6 rounded-xl mt-4 text-center text-sm max-w-lg mx-auto border border-white border-opacity-20 shadow-2xl">
+                    <div class="bg-black bg-opacity-20 p-4 sm:p-6 rounded-xl mt-4 text-center text-sm max-w-lg mx-auto border border-white border-opacity-10 shadow-lg">
                         <p class="mb-2 text-white text-base">Dosya yüklenirken veya Streamlit üzerinden okunurken bir sorun oluştu.</p>
-                        <p class="text-gray-300 text-sm">Python terminalindeki hata kayıtlarını kontrol edin.</p>
+                        <p class="text-white opacity-70 text-sm">Python terminalindeki hata kayıtlarını kontrol edin.</p>
                     </div>
                 `;
             }
