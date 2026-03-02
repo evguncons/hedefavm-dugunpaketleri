@@ -207,11 +207,11 @@
         // PDF.js Worker Tanımlaması
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        /* * DİREKT PDF URL'Sİ: Kendi kataloğunuzun direkt ".pdf" linkini buraya yazın.
-         * DİKKAT: Upload.ee, Dosya.tc gibi sitelerin linkleri ".html" olduğu ve CORS izin vermediği için çalışmaz! 
-         * PDF'i GitHub'a, kendi sitenizin FTP'sine veya HTML dosyasıyla aynı klasöre yüklemelisiniz.
+        /* * STREAMLIT İÇİN ÖZEL YAPILANDIRMA:
+         * Python (Streamlit) kodu, bu "dugunpaketi2026.pdf" metnini otomatik olarak 
+         * kendi oluşturacağı "Base64 PDF Verisi" ile değiştirecek ve çalıştıracaktır.
          */
-        const DEFAULT_PDF_URL = 'dugunpaketi2026.pdf'; 
+        let DEFAULT_PDF_URL = 'dugunpaketi2026.pdf'; 
 
         // Değişkenler
         let pageFlipObj = null;
@@ -269,7 +269,7 @@
             } catch (error) {
                 console.error("PDF Yükleme hatası:", error);
                 
-                // Sadeleştirilmiş Hata Mesajı (Butonsuz)
+                // Sadeleştirilmiş Hata Mesajı
                 loaderSpinner.style.display = 'none';
                 document.getElementById('loading-text').innerHTML = `
                     <i class="fas fa-exclamation-triangle text-brand-orange text-4xl mb-4 block"></i>
@@ -277,8 +277,8 @@
                 `;
                 loadingSubtext.innerHTML = `
                     <div class="bg-black bg-opacity-30 p-4 sm:p-6 rounded-xl mt-4 text-center text-sm max-w-lg mx-auto border border-white border-opacity-20 shadow-2xl">
-                        <p class="mb-2 text-white text-base"><b>${url}</b> dosyası okunamadı.</p>
-                        <p class="text-gray-300 text-sm">Lütfen PDF dosyasının index.html ile aynı klasörde olduğundan ve web sunucusu (GitHub Pages vb.) üzerinden eriştiğinizden emin olun.</p>
+                        <p class="mb-2 text-white text-base">Dosya yüklenirken veya Streamlit üzerinden okunurken bir sorun oluştu.</p>
+                        <p class="text-gray-300 text-sm">Python terminalindeki hata kayıtlarını kontrol edin.</p>
                     </div>
                 `;
             }
@@ -388,36 +388,47 @@
         btnThumbnails.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
         btnCloseSidebar.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
 
-        // Paylaşım İşlevi
+        // Paylaşım İşlevi (Streamlit Güvenli Mod)
         btnShare.addEventListener('click', () => {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Fırsat Kataloğu',
-                    text: 'Bu harika indirimleri incelemelisin!',
-                    url: window.location.href
-                }).catch(err => console.log('Paylaşım iptal edildi', err));
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Katalog linki panoya kopyalandı!");
+            // Streamlit iframe'i içinde olduğumuz için uygulamanın kök URL'sini veya varsayılanı alıyoruz
+            let shareUrl = "https://instagram.com/hedefavm";
+            try { shareUrl = window.top.location.href || shareUrl; } catch(e) {}
+
+            // Eski tarayıcılar ve iframe'ler için güvenli pano kopyalama
+            const tempInput = document.createElement('input');
+            tempInput.value = shareUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                alert("Katalog linki panoya kopyalandı!\n" + shareUrl);
+            } catch (err) {
+                alert("Tarayıcınız kopyalama işlemini desteklemiyor.");
             }
+            document.body.removeChild(tempInput);
         });
 
-        // PDF İndirme İşlevi
+        // PDF İndirme İşlevi (Streamlit Uyumlu)
         btnDownload.addEventListener('click', () => {
             const a = document.createElement('a');
-            a.href = DEFAULT_PDF_URL;
+            a.href = DEFAULT_PDF_URL; // Base64 verisi üzerinden direkt indirir
             a.download = "HedefAVM_Firsat_Katalogu.pdf";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
         });
 
-        // Tam Ekran
+        // Tam Ekran (Streamlit iframe izinlerine tabidir)
         btnFullscreen.addEventListener('click', () => {
+            const doc = window.document.documentElement;
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => console.log(`Tam ekran hatası: ${err.message}`));
+                if (doc.requestFullscreen) doc.requestFullscreen();
+                else if (doc.mozRequestFullScreen) doc.mozRequestFullScreen();
+                else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+                else if (doc.msRequestFullscreen) doc.msRequestFullscreen();
+                else alert("Tam ekran modu Streamlit tarafından engellenmiş olabilir.");
             } else {
-                document.exitFullscreen();
+                if (document.exitFullscreen) document.exitFullscreen();
             }
         });
 
