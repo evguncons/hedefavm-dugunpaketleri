@@ -10,14 +10,36 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Gereksiz Streamlit boşluklarını (margin/padding) sıfırlamak için ufak bir stil
+# Gereksiz Streamlit boşluklarını sıfırlama, Header/Footer (Manage App) Gizleme
 st.markdown("""
     <style>
+        /* Streamlit varsayılan üst menü, header ve footer gizleme */
+        #MainMenu {visibility: hidden;}
+        header {visibility: hidden;}
+        footer {visibility: hidden;}
+        [data-testid="stHeader"] {display: none;}
+        [data-testid="stToolbar"] {display: none;}
+        
+        /* Tam ekran için tüm boşlukları sıfırlama */
         .block-container {
-            padding-top: 0rem;
-            padding-bottom: 0rem;
-            padding-left: 0rem;
-            padding-right: 0rem;
+            padding-top: 0rem !important;
+            padding-bottom: 0rem !important;
+            padding-left: 0rem !important;
+            padding-right: 0rem !important;
+            max-width: 100% !important;
+        }
+        
+        .stApp {
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+        }
+        
+        /* Katalog iframe'ini tam ekran yapma */
+        iframe {
+            height: 100vh !important;
+            border: none !important;
+            display: block;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -50,6 +72,6 @@ html_code = html_code.replace(
     f"let DEFAULT_PDF_URL = '{pdf_data_uri}';"
 )
 
-# 5. HTML (Katalog) bileşenini Streamlit ekranına tam boyutla bas
-# height parametresi ekranın yüksekliğini belirler, duruma göre arttırılabilir.
-components.html(html_code, height=850, scrolling=False)
+# 5. HTML (Katalog) bileşenini Streamlit ekranına bas
+# CSS ile 100vh verdiğimiz için height değerinin iframe üzerinde responsive olmasını sağladık
+components.html(html_code, height=1000, scrolling=False)
