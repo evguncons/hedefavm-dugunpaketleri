@@ -269,21 +269,16 @@
             } catch (error) {
                 console.error("PDF Yükleme hatası:", error);
                 
-                // Kullanıcıya spesifik hata mesajı gösterme
+                // Sadeleştirilmiş Hata Mesajı (Butonsuz)
                 loaderSpinner.style.display = 'none';
                 document.getElementById('loading-text').innerHTML = `
                     <i class="fas fa-exclamation-triangle text-brand-orange text-4xl mb-4 block"></i>
-                    PDF Yüklenemedi!
+                    Katalog Bulunamadı!
                 `;
                 loadingSubtext.innerHTML = `
-                    <div class="bg-black bg-opacity-30 p-4 rounded-lg mt-4 text-left text-sm max-w-md mx-auto">
-                        <strong class="block mb-2 text-white">Muhtemel Sebepler:</strong>
-                        <ul class="list-disc pl-5 space-y-2">
-                            <li>Link doğrudan bir PDF'e gitmiyor olabilir (örneğin upload.ee html linki kullanıldıysa).</li>
-                            <li>Yüklediğiniz site (sunucu), dış sitelerin dosyayı okumasına güvenlik nedeniyle (CORS) izin vermiyor olabilir.</li>
-                        </ul>
-                        <strong class="block mt-4 mb-2 text-white">Çözüm:</strong>
-                        PDF dosyanızı web sitenizin ana dizinine (FTP) yükleyin veya GitHub gibi CORS destekleyen yerler kullanın.
+                    <div class="bg-black bg-opacity-30 p-4 sm:p-6 rounded-xl mt-4 text-center text-sm max-w-lg mx-auto border border-white border-opacity-20 shadow-2xl">
+                        <p class="mb-2 text-white text-base"><b>${url}</b> dosyası okunamadı.</p>
+                        <p class="text-gray-300 text-sm">Lütfen PDF dosyasının index.html ile aynı klasörde olduğundan ve web sunucusu (GitHub Pages vb.) üzerinden eriştiğinizden emin olun.</p>
                     </div>
                 `;
             }
