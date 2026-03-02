@@ -145,9 +145,9 @@
 
         <!-- Yükleniyor Ekranı -->
         <div id="loading-screen" class="absolute inset-0 bg-brand-magenta flex flex-col items-center justify-center z-30 text-white backdrop-blur-md bg-opacity-95">
-            <div class="loader mb-6 border-white border-bottom-color-transparent"></div>
-            <p class="font-bold text-xl sm:text-2xl" id="loading-text">Katalog Hazırlanıyor...</p>
-            <p class="text-sm opacity-80 mt-2">Lütfen bekleyin</p>
+            <div class="loader mb-6 border-white border-bottom-color-transparent" id="loader-spinner"></div>
+            <p class="font-bold text-xl sm:text-2xl text-center px-4" id="loading-text">Katalog Hazırlanıyor...</p>
+            <p class="text-sm opacity-80 mt-2 text-center px-4" id="loading-subtext">Lütfen bekleyin</p>
         </div>
 
         <!-- Kitap Sarıcı (Boyut Sınırlandırması İçin) -->
@@ -207,8 +207,11 @@
         // PDF.js Worker Tanımlaması
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        /* * DİREKT PDF URL'Sİ: Kendi kataloğunuzun direkt ".pdf" linkini buraya yazın. */
-        const DEFAULT_PDF_URL = 'https://www.upload.ee/files/19124035/2026_DU_UN_PAKET__compressed.pdf'; 
+        /* * DİREKT PDF URL'Sİ: Kendi kataloğunuzun direkt ".pdf" linkini buraya yazın.
+         * DİKKAT: Upload.ee, Dosya.tc gibi sitelerin linkleri ".html" olduğu ve CORS izin vermediği için çalışmaz! 
+         * PDF'i GitHub'a, kendi sitenizin FTP'sine veya HTML dosyasıyla aynı klasöre yüklemelisiniz.
+         */
+        const DEFAULT_PDF_URL = '/dugunpaketi2026.pdf'; 
 
         // Değişkenler
         let pageFlipObj = null;
@@ -229,6 +232,8 @@
         const currentPageEl = document.getElementById('current-page');
         const totalPagesEl = document.getElementById('total-pages');
         const zoomOverlay = document.getElementById('zoom-overlay');
+        const loaderSpinner = document.getElementById('loader-spinner');
+        const loadingSubtext = document.getElementById('loading-subtext');
         
         // Butonlar
         const btnPrev = document.getElementById('btn-prev');
@@ -263,7 +268,24 @@
                 await processPdf(pdf);
             } catch (error) {
                 console.error("PDF Yükleme hatası:", error);
-                document.getElementById('loading-text').textContent = "HATA: Katalog Yüklenemedi.";
+                
+                // Kullanıcıya spesifik hata mesajı gösterme
+                loaderSpinner.style.display = 'none';
+                document.getElementById('loading-text').innerHTML = `
+                    <i class="fas fa-exclamation-triangle text-brand-orange text-4xl mb-4 block"></i>
+                    PDF Yüklenemedi!
+                `;
+                loadingSubtext.innerHTML = `
+                    <div class="bg-black bg-opacity-30 p-4 rounded-lg mt-4 text-left text-sm max-w-md mx-auto">
+                        <strong class="block mb-2 text-white">Muhtemel Sebepler:</strong>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Link doğrudan bir PDF'e gitmiyor olabilir (örneğin upload.ee html linki kullanıldıysa).</li>
+                            <li>Yüklediğiniz site (sunucu), dış sitelerin dosyayı okumasına güvenlik nedeniyle (CORS) izin vermiyor olabilir.</li>
+                        </ul>
+                        <strong class="block mt-4 mb-2 text-white">Çözüm:</strong>
+                        PDF dosyanızı web sitenizin ana dizinine (FTP) yükleyin veya GitHub gibi CORS destekleyen yerler kullanın.
+                    </div>
+                `;
             }
         }
 
