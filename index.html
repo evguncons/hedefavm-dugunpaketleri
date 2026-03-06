@@ -164,18 +164,18 @@
     <header class="bg-black bg-opacity-10 text-white p-2 sm:p-3 flex justify-between items-center shadow-md z-20 absolute top-0 left-0 right-0 backdrop-blur-md border-b border-white border-opacity-10">
         <div class="font-semibold text-lg tracking-wide flex items-center gap-1 sm:gap-4" id="book-title">
             <span class="flex items-center gap-1 sm:gap-2 text-[11px] sm:text-base whitespace-nowrap"><i class="fas fa-heart text-white opacity-80"></i> 2026 Düğün Paketleri</span>
-            <div class="bg-black bg-opacity-20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-sm whitespace-nowrap border border-white border-opacity-10 shadow-inner">
+            <div class="bg-black bg-opacity-20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-sm whitespace-nowrap border border-white border-opacity-10 shadow-inner hidden sm:inline-block">
                 Sayfa <span id="current-page">0</span> / <span id="total-pages">0</span>
             </div>
         </div>
-        <div class="flex gap-1.5 sm:gap-3 items-center">
+        <div class="flex gap-2 sm:gap-3 items-center">
             <a href="https://instagram.com/hedefavm" target="_blank" class="bg-black bg-opacity-20 hover:bg-opacity-40 transition px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-sm font-semibold flex items-center gap-1 sm:gap-2 shadow-sm border border-white border-opacity-10">
                 <i class="fab fa-instagram text-white opacity-90 text-sm sm:text-base"></i> <span class="hidden md:inline">İnstagram</span>
             </a>
-            <a href="https://api.whatsapp.com/send/?phone=905349525687&text=Merhaba, Katalog hakkında ve Elden taksitli alışveriş için bilgi almak istiyorum." target="_blank" class="bg-brand-whatsapp hover:bg-[#1ebe57] text-white transition px-2 sm:px-5 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-sm font-bold flex items-center gap-1 sm:gap-2 shadow-[0_0_15px_rgba(37,211,102,0.4)] border border-brand-whatsapp">
-                <i class="fab fa-whatsapp text-white text-sm sm:text-lg"></i> 
+            <a href="https://api.whatsapp.com/send/?phone=905349525687&text=Merhaba, Katalog hakkında ve Elden taksitli alışveriş için bilgi almak istiyorum." target="_blank" class="bg-brand-whatsapp hover:bg-[#1ebe57] text-white transition px-3 sm:px-5 py-2 sm:py-2 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 shadow-[0_0_15px_rgba(37,211,102,0.4)] border border-brand-whatsapp">
+                <i class="fab fa-whatsapp text-white text-base sm:text-lg"></i> 
                 <span class="hidden sm:inline">Bilgi Almak İçin Tıkla</span>
-                <span class="sm:hidden">Bilgi Al</span>
+                <span class="sm:hidden text-xs tracking-wide">Bilgi Al</span>
             </a>
         </div>
     </header>
@@ -192,7 +192,7 @@
     </div>
 
     <!-- Ana İçerik Alanı (Katalog Gövdesi) -->
-    <main class="absolute top-16 bottom-24 left-0 right-0 flex items-center justify-center overflow-hidden z-10" id="main-container">
+    <main class="absolute top-14 sm:top-16 bottom-0 sm:bottom-24 left-0 right-0 flex items-center justify-center overflow-hidden z-10" id="main-container">
         
         <!-- Arkaplan Yazısı -->
         <div class="watermark">HedefAVM</div>
@@ -225,8 +225,8 @@
         <button id="btn-close-zoom" class="text-white opacity-60 hover:opacity-100 ml-1 sm:ml-2 transition"><i class="fas fa-times"></i></button>
     </div>
 
-    <!-- Alt Araç Çubuğu -->
-    <footer class="absolute bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-20 backdrop-blur-md rounded-full px-3 py-2 sm:p-3 shadow-xl z-20 flex justify-between items-center w-[98%] sm:w-[95%] max-w-3xl border border-white border-opacity-10">
+    <!-- Alt Araç Çubuğu (MOBİLDE GİZLENDİ: hidden sm:flex kullanıldı) -->
+    <footer class="hidden sm:flex absolute bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-20 backdrop-blur-md rounded-full px-3 py-2 sm:p-3 shadow-xl z-20 justify-between items-center w-[98%] sm:w-[95%] max-w-3xl border border-white border-opacity-10">
         
         <!-- Sol İkonlar -->
         <div class="flex gap-2 sm:gap-6 text-white opacity-90 mr-1 sm:mr-6">
@@ -271,12 +271,14 @@
         let pageFlipObj = null;
         let pdfDoc = null;
 
-        // Panning Değişkenleri
+        // Panning Değişkenleri ve Dokunmatik Pinch Değişkenleri
         let currentScale = 1;
         let translateX = 0;
         let translateY = 0;
         let isPanning = false;
         let startX = 0, startY = 0;
+        let initialPinchDistance = null;
+        let initialScaleAtPinch = 1;
 
         // DOM Elementleri
         const loadingScreen = document.getElementById('loading-screen');
@@ -574,6 +576,52 @@
                 applyZoomTransform();
             }
         }, { passive: false });
+
+        // --- MOBİL İKİ PARMAK İLE YAKINLAŞTIRMA (PINCH-TO-ZOOM) ---
+        function getDistance(touches) {
+            return Math.hypot(
+                touches[0].clientX - touches[1].clientX,
+                touches[0].clientY - touches[1].clientY
+            );
+        }
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                initialPinchDistance = getDistance(e.touches);
+                initialScaleAtPinch = currentScale;
+                isPanning = false; // Yakınlaştırma yaparken kaydırmayı durdur
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && initialPinchDistance) {
+                e.preventDefault(); // Tarayıcının varsayılan davranışını durdur
+                
+                const currentDistance = getDistance(e.touches);
+                let scaleAmount = currentDistance / initialPinchDistance;
+                
+                // Yakınlaştırma sınırları: Min %50 (0.5), Max %300 (3)
+                currentScale = Math.min(Math.max(initialScaleAtPinch * scaleAmount, 0.5), 3);
+                
+                zoomSlider.value = currentScale;
+                zoomValText.textContent = Math.round(currentScale * 100) + "%";
+                
+                if (currentScale > 1) {
+                    zoomOverlay.classList.remove('hidden');
+                } else {
+                    zoomOverlay.classList.add('hidden');
+                    translateX = 0;
+                    translateY = 0;
+                }
+                applyZoomTransform();
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                initialPinchDistance = null;
+            }
+        });
 
     </script>
 </body>
