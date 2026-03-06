@@ -5,7 +5,7 @@ import os
 
 st.set_page_config(page_title="HedefAVM Dijital Katalog", layout="wide", initial_sidebar_state="collapsed")
 
-# STREAMLIT MOBILE SİYAH BOŞLUK ÇÖZÜMÜ
+# AÇILIŞTA GÖRÜNEN TURUNCU EKRANI KALDIRAN VE YENİ TEMAYA UYAN CSS
 st.markdown("""
     <style>
         /* Streamlit Menüleri Gizle */
@@ -13,10 +13,13 @@ st.markdown("""
         header {visibility: hidden;}
         footer {visibility: hidden;}
         
-        /* Arkaplanı renkli yap ve boşlukları sıfırla */
-        .stApp {
-            background-color: #f70059 !important;
-            background-image: linear-gradient(135deg, #f70059 0%, #ff4d15 100%) !important;
+        /* Arkaplanı yeni Lüks Temaya (Mürdüm/Magenta) sabitle */
+        .stApp, .main {
+            background-color: #830642 !important;
+            background-image: linear-gradient(135deg, #c71a6c 0%, #830642 100%) !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
         }
         .block-container {
             padding: 0 !important;
