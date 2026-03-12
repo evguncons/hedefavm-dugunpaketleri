@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dijital Flipbook</title>
+    <title>HEDEF AVM - BAYRAM ETTİREN FIRSATLAR KATALOG</title>
     
     <!-- Tailwind CSS (Tasarım ve Düzen için) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -122,8 +122,8 @@
             border: 4px solid rgba(255,255,255,0.2);
             border-bottom-color: #ffffff;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
@@ -157,13 +157,22 @@
 </head>
 <body class="font-sans text-gray-800">
 
+    <!-- TAM EKRAN YÜKLENİYOR (AÇILIŞ) EKRANI -->
+    <!-- En üst katmanda (z-[9999]) yer alır, arkaplanın veya menülerin parlamasını engeller -->
+    <div id="loading-screen" class="fixed inset-0 bg-gradient-to-br from-brand-dark via-brand-magenta to-brand-dark flex flex-col items-center justify-center z-[9999] text-white">
+        <div class="loader mb-6" id="loader-spinner"></div>
+        <h1 class="font-bold text-3xl sm:text-4xl mb-2 tracking-widest animate-pulse text-brand-light">HedefAVM</h1>
+        <p class="font-bold text-lg sm:text-xl text-center px-4 tracking-wide" id="loading-text">Katalog Hazırlanıyor...</p>
+        <p class="text-sm opacity-70 mt-2 text-center px-4 font-light" id="loading-subtext">Sayfalar oluşturulurken lütfen bekleyin</p>
+    </div>
+
     <!-- Dinamik Arkaplan Katmanı -->
     <div class="bg-campaign"></div>
 
     <!-- Üst Header -->
     <header class="bg-black bg-opacity-10 text-white p-2 sm:p-3 flex justify-between items-center shadow-md z-20 absolute top-0 left-0 right-0 backdrop-blur-md border-b border-white border-opacity-10">
         <div class="font-semibold text-lg tracking-wide flex items-center gap-1 sm:gap-4" id="book-title">
-            <span class="flex items-center gap-1 sm:gap-2 text-[11px] sm:text-base whitespace-nowrap"><i class="fas fa-heart text-white opacity-80"></i> 2026 Düğün Paketleri</span>
+            <span class="flex items-center gap-1 sm:gap-2 text-[11px] sm:text-base whitespace-nowrap"><i class="fas fa-heart text-white opacity-80"></i> BAYRAM ETTİREN FIRSATLAR</span>
             <div class="bg-black bg-opacity-20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-sm whitespace-nowrap border border-white border-opacity-10 shadow-inner hidden sm:inline-block">
                 Sayfa <span id="current-page">0</span> / <span id="total-pages">0</span>
             </div>
@@ -196,13 +205,6 @@
         
         <!-- Arkaplan Yazısı -->
         <div class="watermark">HedefAVM</div>
-
-        <!-- Yükleniyor Ekranı -->
-        <div id="loading-screen" class="absolute inset-0 bg-gradient-to-br from-brand-dark via-brand-magenta to-brand-dark flex flex-col items-center justify-center z-30 text-white backdrop-blur-sm">
-            <div class="loader mb-6" id="loader-spinner"></div>
-            <p class="font-bold text-lg sm:text-2xl text-center px-4 tracking-wide" id="loading-text">Katalog Hazırlanıyor...</p>
-            <p class="text-xs sm:text-sm opacity-80 mt-2 text-center px-4 font-light" id="loading-subtext">Lütfen bekleyin</p>
-        </div>
 
         <!-- Kitap Sarıcı -->
         <div id="flipbook-wrapper" class="w-[98%] sm:w-[90%] max-w-5xl h-full max-h-[850px] origin-center z-10 flex justify-center items-center relative py-1 sm:py-2">
@@ -262,10 +264,10 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
         /* * STREAMLIT İÇİN ÖZEL YAPILANDIRMA:
-         * Python (Streamlit) kodu, bu "dugunpaketi2026.pdf" metnini otomatik olarak 
+         * Python (Streamlit) kodu, bu "mart-insert.pdf" metnini otomatik olarak 
          * kendi oluşturacağı "Base64 PDF Verisi" ile değiştirecek ve çalıştıracaktır.
          */
-        let DEFAULT_PDF_URL = 'dugunpaketi2026.pdf'; 
+        let DEFAULT_PDF_URL = 'mart-insert.pdf'; 
 
         // Değişkenler
         let pageFlipObj = null;
